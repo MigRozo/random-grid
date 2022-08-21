@@ -15,8 +15,9 @@ animate(); */
 
 const sketch = ({ width, height }) => {
   const agents = [];
+  const agentsLength = 25;
 
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < agentsLength; i++) {
     const x = random.range(0, width);
     const y = random.range(0, height);
     agents.push( new Agent(x, y) );
@@ -49,7 +50,8 @@ const sketch = ({ width, height }) => {
     agents.forEach((agent) => {
       agent.update();
       agent.draw(context);
-      agent.bounce( width, height );
+      // agent.bounce( width, height );
+      agent.wrap( width, height );
     });
   };
 };
@@ -73,6 +75,13 @@ class Agent {
     this.pos = new Vector(x, y);
     this.vel = new Vector(random.range(-1, 1), random.range(-1, 1));
     this.radius = random.range(4, 12);
+  }
+
+  wrap ( width, height ) {
+    if ( this.pos.x < 0 ) this.pos.x = width;
+    if ( this.pos.x > width ) this.pos.x = 0;
+    if ( this.pos.y < 0 ) this.pos.y = height;
+    if ( this.pos.y > height ) this.pos.y = 0;
   }
 
   bounce ( width, height ) {
